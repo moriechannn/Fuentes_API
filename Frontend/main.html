@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <button onclick="logout()" class="logout-btn">Logout</button>
+
+    <h1>Student Management</h1>
+
+    <div class="form-section">
+      <input type="text" id="name" placeholder="Name">
+
+      <select id="course">
+        <option value="">Select Course</option>
+        <option value="BSCS">BSCS</option>
+        <option value="BSIT">BSIT</option>
+        <option value="BSIS">BSIS</option>
+        <option value ="BSEE">BSEE</option>
+      </select>
+
+      <select id="year">
+        <option value="">Select Year</option>
+        <option value="1">Year 1</option>
+        <option value="2">Year 2</option>
+        <option value="3">Year 3</option>
+        <option value="4">Year 4</option>
+      </select>
+
+      <button onclick="addStudent()">Add Student</button>
+    </div>
+
+    <ul id="studentList"></ul>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", async () => {
+      const ul = document.getElementById("studentList");
+      try {
+        const res = await fetch("http://localhost:3000/students");
+        const students = await res.json();
+        students.forEach(s => appendStudentToList(s));
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    function appendStudentToList(student) {
+      const ul = document.getElementById("studentList");
+      const li = document.createElement("li");
+      li.dataset.id = student.id;
+      li.innerHTML = `
+        ${student.name} - ${student.course} - Year ${student.year} 
+        <button onclick="updateStudent(${student.id}, this)">Update</button>
+        <button onclick="deleteStudent(${student.id}, this)">Delete</button>
+      `;
+      ul.appendChild(li);
+    }
+
+    // Add student//
+    async function addStudent() {
+      const name = document.getElementById('name').value;
+      const course = document.getElementById('course').value;
+      const year = document.getElementById('year').value;
+
+      if (!name || !course || !year) {
+        alert("Please fill out all fields!");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/students", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, course, year })
+        });
+
+        const data = await response.json(); // data.id is the inserted student's ID
+        appendStudentToList({ id: data.id, name, course, year });
+
+        document.getElementById('name').value = '';
+        document.getElementById('course').value = '';
+        document.getElementById('year').value = '';
+
+        alert("Student added successfully!");
+
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong. Please try again.");
+      }
+    }
+
+    // Delete student//
+    async function deleteStudent(id, btn) {
+      if (!confirm("Are you sure?")) return;
+
+      try {
+        await fetch(`http://localhost:3000/students/${id}`, { method: "DELETE" });
+        btn.parentElement.remove();
+        alert("Deleted successfully!");
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong. Please try again.");
+      }
+    }
+
+    // Update student//
+    async function updateStudent(id, btn) {
+      const li = btn.parentElement;
+      const text = li.textContent.split(" - ");
+      
+      const newName = prompt("Update Name:", text[0]);
+      const newCourse = prompt("Update Course:", text[1]);
+      const newYear = prompt("Update Year:", text[2].replace("Year ", ""));
+
+      if (!newName || !newCourse || !newYear) {
+        alert("All fields are required!");
+        return;
+      }
+
+      try {
+        await fetch(`http://localhost:3000/students/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: newName, course: newCourse, year: newYear })
+        });
+
+        li.innerHTML = `
+          ${newName} - ${newCourse} - Year ${newYear} 
+          <button onclick="updateStudent(${id}, this)">Update</button>
+          <button onclick="deleteStudent(${id}, this)">Delete</button>
+        `;
+
+        alert("Updated successfully!");
+      } catch (err) {
+        console.error(err);
+        alert("Something went wrong. Please try again.");
+      }
+    }
+
+    // Logout//
+    function logout() {
+      alert("Logging out...");
+      window.location.href = "frontpage.html";
+    }
+  </script>
+
+</body>
+</html>

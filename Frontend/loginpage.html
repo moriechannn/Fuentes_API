@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="loginstyle.css">
+</head>
+<body>
+
+<div class="login-container fade-in">
+    <h2 class="fade-in delay-1">LogIn to Continue 💗</h2>
+
+    <input type="email" id="email" placeholder="Email" class="fade-in delay-2">
+    <input type="password" id="password" placeholder="Password" class="fade-in delay-3">
+
+    <button onclick="login()" class="fade-in delay-4">Login</button>
+</div>
+
+<script>
+function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (email === "" || password === "") {
+        alert("Please enter both email and password 💗");
+        return;
+    }
+
+    //Admin example account://
+    if (email === "admin123@gmail.com" && password === "ambot1234") {
+        window.location.href = "main.html";
+    } else {
+        alert("Invalid email or password ❌");
+    }
+}
+</script>
+
+</body>
+</html>

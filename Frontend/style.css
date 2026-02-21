@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: url('https://i.pinimg.com/736x/33/7a/6a/337a6a611f01bc7c662d0d5cbbc65e2c.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #000000;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background: rgba(181, 180, 180, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #493e40;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+}
+
+.form-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+input, select {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  min-width: 150px;
+  font-size: 1em;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus {
+  border: 2px solid #ff758c;
+  box-shadow: 0 0 5px rgba(255, 118, 136, 0.5);
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #ff69b4;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background: #ff85c1;
+  transform: translateY(-2px);
+}
+
+.logout-btn {
+  float: right;
+  background: #ff4d6d;
+}
+
+.logout-btn:hover {
+  background: #fcf1f3;
+  color: #493e40;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 192, 203, 0.3);
+  padding: 12px 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+li button {
+  background: #ff69b4;
+  padding: 6px 12px;
+  font-size: 0.9em;
+}
+
+li button:hover {
+  background: #ff85c1;
+}
+
+.container, h1, .form-section, input, select, button, ul, li {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s forwards;
+}
+
+.container      { animation-delay: 0.3s; }
+h1              { animation-delay: 0.6s; }
+.form-section   { animation-delay: 0.9s; }
+input           { animation-delay: 1.2s; }
+select          { animation-delay: 1.4s; }
+button          { animation-delay: 1.6s; }
+ul              { animation-delay: 1.8s; }
+li              { animation-delay: 2.0s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
